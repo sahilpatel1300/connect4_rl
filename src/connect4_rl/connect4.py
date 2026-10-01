@@ -21,9 +21,18 @@ class Connect4:
                 self.board[row, action] = self.current_player
                 break
 
+        # Player who just moved won
+        if self.check_win(self.current_player):
+            return self.board, 1, True
+
+        # Board is full
+        if self.is_draw():
+            return self.board, 0, True
+
+        # Game continues
         self.current_player = -self.current_player
 
-        return self.board, self.current_player
+        return self.board, 0, False
 
 
     def print_board(self):
@@ -103,10 +112,16 @@ class Connect4:
 if __name__ == "__main__":
     game = Connect4()
 
-    game.step(3)
-    game.step(4)
-    game.step(3)
-    game.step(4)
-    game.step(3)
+    game.step(3)  # X
+    game.step(4)  # O
+    game.step(3)  # X
+    game.step(4)  # O
+    game.step(3)  # X
+    game.step(5)  # O
+
+    board, reward, done = game.step(3)  # X WINS
 
     game.print_board()
+
+    print("Reward:", reward)
+    print("Done:", done)
